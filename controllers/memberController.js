@@ -10,18 +10,8 @@ exports.findOneByID = async (id) => {
 };
 
 exports.findAll = (req, res) => {
-  const username = req.body.username;
-  const password = req.body.password;
-  Member.findAll({ where: { username : `%${username}%`, password: `%${password}%`}})
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving member."
-      });
-    });
+  return db.sequelize.query(`select * from member where SUBSTRING_INDEX(email,"@",-1) <> "jei-2021.tn";
+  `)
 };
 
 exports.create = async (req, res,hash,salt) => {

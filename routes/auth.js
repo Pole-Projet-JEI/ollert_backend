@@ -4,7 +4,6 @@ const router = Router()
 const memberController=require("../controllers/memberController")
 
 
-
 router.post(
     "/login",
     (req,res,next)=>{

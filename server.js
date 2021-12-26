@@ -3,6 +3,8 @@ const cors = require('cors');
 const passport = require('passport');
 const authRoute=require("./routes/auth");
 const projectsRoute=require("./routes/projects");
+const membersRoute=require("./routes/members");
+
 
 // Gives us access to variables set in the .env file via `process.env.VARIABLE_NAME` syntax
 require('dotenv').config();
@@ -25,19 +27,20 @@ app.use(express.urlencoded({extended: true}));
 app.use(cors());
 
 
+
 app.use("/auth",authRoute)
-
-
 app.use(passport.authenticate("jwt",{session:false}))
 
-
-app.use("/projects",projectsRoute)
-
-
-app.get("/logout",passport.authenticate("jwt",{session:false}),(req,res)=>{
+app.get("/logout",(req,res)=>{
     req.logOut()
     res.send("logged out successfully")
 })
+
+app.use("/projects",projectsRoute)
+app.use("/members",membersRoute)
+
+
+
 
 
 app.listen(3000);
