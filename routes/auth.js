@@ -7,22 +7,26 @@ const memberController=require("../controllers/memberController")
 router.post(
     "/login",
     (req,res,next)=>{
-      memberController.findOne( req.body.username).then((member)=>{
-        if(!member)
+        console.log(req.body.username)
+      memberController.findOne(req.body.username).then((member)=>{
+        if(!member && member.length()==0)
         {
             res.status(401).json({success:false,msg:"could not find user"})
         }
-                const isValid=utils.validPassword(req.body.password,member[0].dataValues.Hash,member[0].dataValues.Salt)
-
-        if(isValid)
-        {
-            const tokenObject= utils.issueJWT(member[0].dataValues)
-            res.status(200).json({success:true,token:tokenObject.token,expiresIn:tokenObject.expires})
-
-        }
         else{
-            res.status(401).json({success:false,msg:"you entered a wrong password"})
+            const isValid=utils.validPassword(req.body.password,member[0].dataValues.Hash,member[0].dataValues.Salt)
+
+            if(isValid)
+            {
+                const tokenObject= utils.issueJWT(member[0].dataValues)
+                res.status(200).json({success:true,email:member[0].dataValues.email,token:tokenObject.token,expiresIn:tokenObject.expires})
+    
+            }
+            else{
+                res.status(401).json({success:false,msg:"you entered a wrong password"})
+            }
         }
+                
 
 
       }).catch((err)=>{

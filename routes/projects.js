@@ -38,11 +38,16 @@ router.get("/", async (req,res) =>
 router.post("/add",async(req,res)=>{
     if((req.user)[0].email.split("@")[1]==="jei-2021.tn")
         {
-        const {name,type,description,deadline}= req.body;
-
+        members= (req.body.members).substring(1,(req.body.members).length-1).split(",")
         try{
-           console.log((req.user)[0].id)
-           res.status(200).json(await projectController.create(req,res,(req.user)[0].id))    
+           const data=await projectController.create(req,res,(req.user)[0].id)
+           console.log(data.id)
+           for(i=0;i<members.length;i++)
+           {
+            console.log(members[i])
+            await db.sequelize.query(`INSERT INTO member_project(id_member,id_project) VALUES('${members[i]}','${data.id}')`)
+           }
+           res.status(200).json(data)
         }
         catch(err)
         {

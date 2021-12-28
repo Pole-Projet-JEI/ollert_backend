@@ -4,6 +4,7 @@ const passport = require('passport');
 const authRoute=require("./routes/auth");
 const projectsRoute=require("./routes/projects");
 const membersRoute=require("./routes/members");
+const tasksRoute=require("./routes/tasks");
 
 
 // Gives us access to variables set in the .env file via `process.env.VARIABLE_NAME` syntax
@@ -38,7 +39,7 @@ app.get("/logout",(req,res)=>{
 
 app.use("/projects",projectsRoute)
 app.use("/members",membersRoute)
-
+app.use("/tasks",tasksRoute)
 
 
 
